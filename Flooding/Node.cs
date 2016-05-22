@@ -7,48 +7,48 @@ using System.Threading.Tasks;
 
 namespace Flooding
 {
-    class Node<T> : IEquatable<Node<T>> where T : IEquatable<T>
+    class Node
     {
-        private T _data;
-        private LinkedList<Node<T>> _neighbours;
+        private RouterData _data;
+        private LinkedList<Node> _neighbours;
 
-        public Node(T data)
+        public Node(RouterData data)
         {
             _data = data;
         }
 
-        public Node(T data, LinkedList<Node<T>> neighbours) : this(data)
+        public Node(RouterData data, LinkedList<Node> neighbours) : this(data)
         {
             _neighbours = neighbours;
         }
 
         #region Properties
 
-        public T Data
+        public RouterData Data
         {
             get { return _data; }
             set { _data = value; }
         }
 
-        public LinkedList<Node<T>> Neighbours => _neighbours;
+        public LinkedList<Node> Neighbours => _neighbours;
 
         #endregion
 
         #region Methods
 
-        public void AddNeighbour(Node<T> neighbour)
+        public void AddNeighbour(Node neighbour)
         {
             if (_neighbours == null)
-                _neighbours = new LinkedList<Node<T>>();
+                _neighbours = new LinkedList<Node>();
 
             // Only add neighbour if it's not already a neighbour
             if (!_neighbours.Contains(neighbour))
                 _neighbours.AddLast(neighbour);
         }
 
-        public void AddNeighbour(T data)
+        public void AddNeighbour(RouterData data)
         {
-            Node<T> node = new Node<T>(data);
+            Node node = new Node(data);
             AddNeighbour(node);
         }
 
@@ -65,7 +65,7 @@ namespace Flooding
             }
         }
 
-        public void RemoveNeighbour(Node<T> neighbour)
+        public void RemoveNeighbour(Node neighbour)
         {
             if (_neighbours == null)
                 return;
@@ -73,9 +73,23 @@ namespace Flooding
             _neighbours.Remove(neighbour);
         }
 
+        public void Flood(int sequenceID)
+        {
+            foreach (var packet in Data.Packets.Where(p => p.SequenceID == sequenceID))
+            {
+                foreach (var neighbour in Neighbours)
+                {
+                    var newPacket = packet.Clone();
+                    if (newPacket.SendTo(neighbour.Data.ID))
+                        neighbour.Data.ReceivePacket(newPacket);
+                }
+            }
+            Data.ClearPackets(sequenceID);
+        }
+
         #endregion
 
-        public bool Equals(Node<T> other) => _data.Equals(other.Data);
+        public bool Equals(Node other) => _data.Equals(other.Data);
 
     }
 }

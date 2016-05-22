@@ -6,50 +6,52 @@ using System.Threading.Tasks;
 
 namespace Flooding
 {
-    class Graph<T> where T : IEquatable<T>
+    class Graph
     {
-        private List<Node<T>> _nodes;
+        private List<Node> _nodes;
 
-        public Graph(List<Node<T>> nodes = null)
+        public Graph(List<Node> nodes = null)
         {
             if (nodes == null)
-                _nodes = new List<Node<T>>();
+                _nodes = new List<Node>();
             else
                 _nodes = nodes;
         }
 
-        public List<Node<T>> Nodes => _nodes;
+        public List<Node> Nodes => _nodes;
 
         #region Methods
 
-        public void AddNode(Node<T> node)
+        public void AddNode(Node node)
         {
             if (!_nodes.Contains(node))
                 _nodes.Add(node);
         }
 
-        public void AddNote(IEnumerable<Node<T>> nodes)
+        public void AddNote(IEnumerable<Node> nodes)
         {
             foreach (var node in nodes)
                 AddNode(node);
         }
 
-        public void AddNode(T data)
+        public void AddNode(RouterData data)
         {
-            AddNode(new Node<T>(data));
+            AddNode(new Node(data));
         }
 
-        public void AddEdge(Node<T> from, Node<T> to)
+        public void AddEdge(Node from, Node to)
         {
             from.AddNeighbour(to);
             to.AddNeighbour(from);
         }
 
-        public Node<T> NodeAt(int index) => _nodes[index];
+        public Node NodeAt(int index) => _nodes[index];
 
-        public static Graph<RouterData> GetSampleTopology()
+        public Node NodeWithID(char id) => _nodes.FirstOrDefault(n => n.Data.ID == id);
+
+        public static Graph GetSampleTopology()
         {
-            Graph<RouterData> graph = new Graph<RouterData>();
+            Graph graph = new Graph();
 
             foreach (var num in Enumerable.Range(0, 10))
                 graph.AddNode(new RouterData((char)(65 + num))); // Generates nodes A to J
