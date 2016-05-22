@@ -10,6 +10,12 @@ namespace Flooding
     {
         static void Main(string[] args)
         {
+            var topology = Graph<RouterData>.GetSampleTopology();
+
+            foreach (var node in topology.Nodes)
+                node.DisplayNeighbours();
+
+            Console.ReadLine();
         }
     }
 }
