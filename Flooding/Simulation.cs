@@ -15,6 +15,7 @@ namespace Flooding
         private readonly int tickInterval;
         private readonly Mutex mtx = new Mutex(false);
         private readonly Random rnd = new Random((int)DateTime.Now.Ticks);
+        private System.Timers.Timer timer;
 
         public Simulation(SimulationOptions options)
         {
@@ -37,7 +38,7 @@ namespace Flooding
 
         public void Run()
         {
-            var timer = new System.Timers.Timer()
+            timer = new System.Timers.Timer()
             {
                 Interval = tickInterval,
                 AutoReset = true,
@@ -79,6 +80,11 @@ namespace Flooding
             };
 
             timer.Start();
+        }
+
+        public void Stop()
+        {
+            timer.Stop();
         }
 
 

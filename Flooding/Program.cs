@@ -12,18 +12,37 @@ namespace Flooding
     {
         static void Main(string[] args)
         {
-            var simOptions = new SimulationOptions
+            var cmdOptions = new CmdOptions();
+            if (CommandLine.Parser.Default.ParseArguments(args, cmdOptions)) // Valid arguments from cmd
             {
-                Topology = Graph.GetSampleTopology(),
-                PacketGenerationChance = 0.1,
-                PacketHopCount = 4,
-                TickInterval = 250
-            };
+                var simOptions = new SimulationOptions
+                {
+                    Topology = Graph.GetSampleTopology(),
+                    PacketGenerationChance = cmdOptions.PacketGenChance,
+                    PacketHopCount = cmdOptions.PacketHopCount,
+                    TickInterval = cmdOptions.TickInterval
+                };
 
-            Simulation sim = new Simulation(simOptions);
+                ShowSimulationMenu(simOptions);
+            }
+            else
+                Console.WriteLine("Invalid arguments supplied");        
+             
+            Console.ReadLine();
+        }
+
+        static void ShowSimulationMenu(SimulationOptions options)
+        {
+            Console.WriteLine("Press enter/return to start the simulation");
+            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine("Simulation is starting in 3s... Press enter/return to stop the simulation at any time");
+            Thread.Sleep(2000);
+            Simulation sim = new Simulation(options);
             sim.Run();
 
             Console.ReadLine();
+            sim.Stop();
         }
     }
 }
