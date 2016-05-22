@@ -28,15 +28,16 @@ namespace Flooding
         {
             ++_packetCount;
 
-            _hopCount = 99;
+            _hopCount = 150;
             _id = _packetCount;
         }
 
-        public Packet(char sourceId, char destId, int sequenceId) : this()
+        public Packet(char sourceId, char destId, int sequenceId, byte hopCount = 4) : this()
         {
             if (sourceId == destId)
                 throw new ArgumentException("Source id cannot be the same as the destination id");
 
+            _hopCount = hopCount;
             _sequenceId = sequenceId;
             _sourceId = sourceId;
             _currentId = sourceId;

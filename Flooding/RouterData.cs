@@ -29,6 +29,8 @@ namespace Flooding
 
         public bool HasPackets => Packets?.Any() ?? false;
 
+        public bool IsAtMaxCapcity => _maxCapacity == _packets?.Count;
+
         #endregion
 
 

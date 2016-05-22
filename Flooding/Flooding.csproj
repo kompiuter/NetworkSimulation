@@ -50,6 +50,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomNode.cs" />
     <Compile Include="RouterData.cs" />
+    <Compile Include="Simulation.cs" />
+    <Compile Include="SimulationOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
