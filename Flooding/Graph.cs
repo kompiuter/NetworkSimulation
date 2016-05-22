@@ -52,7 +52,7 @@ namespace Flooding
             Graph<RouterData> graph = new Graph<RouterData>();
 
             foreach (var num in Enumerable.Range(0, 10))
-                graph.AddNode(new RouterData((char)(65 + num))); // Generates nodes from A to J
+                graph.AddNode(new RouterData((char)(65 + num))); // Generates nodes A to J
 
             graph.AddEdge(graph.NodeAt(0), graph.NodeAt(1)); // A connected to B
             graph.AddEdge(graph.NodeAt(0), graph.NodeAt(2)); // A connected to C
